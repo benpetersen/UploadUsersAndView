@@ -1,20 +1,16 @@
-﻿using System.Data.Entity;
+﻿using System.Configuration;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
 namespace User.Models
 {
-	public partial class UsersContext : DbContext
+	public class UsersContext : DbContext
 	{
-		public UsersContext()
-			: base("name=UsersContext")
-		{
-		}
+        public UsersContext() : base("UserDatabase")
+        {
 
-		protected override void OnModelCreating(DbModelBuilder modelBuilder)
-		{
-			throw new UnintentionalCodeFirstException();
-		}
-
-		public virtual DbSet<Users> Users { get; set; }
+        }
+        public virtual DbSet<Users> Users { get; set; }
+		
 	}
 }
