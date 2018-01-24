@@ -25,11 +25,11 @@ namespace User.Filters
 		{
 			public SimpleMembershipInitializer()
 			{
-				Database.SetInitializer<UsersContext>(null);
+				Database.SetInitializer<UserContext>(null);
 
 				try
 				{
-					using (var context = new UsersContext())
+					using (var context = new UserContext())
 					{
 						if (!context.Database.Exists())
 						{

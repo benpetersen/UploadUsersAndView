@@ -1,33 +1,31 @@
-﻿@model IEnumerable<User.Models.Users>
+﻿@model User.ViewModels.UserData
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Users";
 }
 
-<h4>Add Users via Excel</h4>
-<hr />
-@using (Html.BeginForm("UploadExcel", "Users", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return myFunction()" }))
-{
-    <div class="form-horizontal">
-        <div class="form-group">
-            <div class="control-label col-md-2">Download Format:</div>
-            <div class="col-md-10">
-                <a href="/User/DownloadExcel/"><img src="~/excel.ico" width="25" height="25" title="Download Excel format" alt="excel" /></a>
-            </div>
-        </div>
+<h2>Users</h2>
 
 
-        <div class="form-group">
+<table>
+    <tr>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Email</th>
+    </tr>
 
-            <div class="control-label col-md-2">Excel:</div>
-            <div class="col-md-10">
-                <input type="file" id="FileUpload" name="FileUpload" class="" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Upload" id="btnSubmit" class="btn btn-primary" />
-
-            </div>
-        </div>
-    </div>
-} 
+    @foreach (var item in Model.Users)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+        </tr>
+    }
+</table>
