@@ -25,7 +25,7 @@ namespace User.Controllers
 
         public ActionResult Index()
         {
-            //UploadExcel();
+            UploadExcel();
             var viewModel = new UserData();
             viewModel.Users = db.Users.ToList();
             return View(viewModel);
@@ -71,42 +71,41 @@ namespace User.Controllers
 
 		public void UploadExcel()
 		{
-            string CSVpath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;//../Data"
+            string CSVpath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
             string csvPath = Server.MapPath("Data\\users.csv");
             string dbPath = Server.MapPath("App_Data\\Database.mdf");
             string serverName = "(LocalDB)\\MSSQLLocalDB";
             string SQLServerConnectionString = String.Format("Data Source={0};AttachDbFilename={1};Integrated Security=True;Connect Timeout=30", serverName, dbPath);
-
             string CSVFileConnectionString = String.Format("Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};;Extended Properties=\"text;HDR=Yes;FMT=Delimited\";", CSVpath);
-            //var AllFiles = new DirectoryInfo(path).GetFiles("*.csv");
+            
+            try
+            {
+                DataTable dt = GetDataTabletFromCSVFile(csvPath);
+                //using (SqlBulkCopy bulkCopy = new SqlBulkCopy(SQLServerConnectionString))
+                //{
+                //    //bulkCopy.ColumnMappings.Add(0, "UserId");
+                //    bulkCopy.ColumnMappings.Add(0, "Email");
+                //    bulkCopy.ColumnMappings.Add(1, "FirstName");
+                //    bulkCopy.ColumnMappings.Add(2, "LastName");
+                //    bulkCopy.DestinationTableName = "[User]";
+                //    bulkCopy.BatchSize = 0;
+                //    bulkCopy.WriteToServer(dt);
+                //    bulkCopy.Close();
+                //}
+                ViewBag.Title = "Success!";
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in entityValidationErrors.ValidationErrors)
+                    {
+                        Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                    }
+                }
+            }
 
-			//try
-			//{
-   //             DataTable dt = GetDataTabletFromCSVFile(csvPath);
-   //             using (SqlBulkCopy bulkCopy = new SqlBulkCopy(SQLServerConnectionString))
-   //             {
-   //                 //bulkCopy.ColumnMappings.Add(0, "UserId");
-   //                 bulkCopy.ColumnMappings.Add(0, "Email");
-   //                 bulkCopy.ColumnMappings.Add(1, "FirstName");
-   //                 bulkCopy.ColumnMappings.Add(2, "LastName");
-   //                 bulkCopy.DestinationTableName = "[User]";
-   //                 bulkCopy.BatchSize = 0;
-   //                 bulkCopy.WriteToServer(dt);
-   //                 bulkCopy.Close();
-   //             }
-			//}
-			//catch (DbEntityValidationException ex)
-			//{
-			//	foreach (var entityValidationErrors in ex.EntityValidationErrors)
-			//	{
-			//		foreach (var validationError in entityValidationErrors.ValidationErrors)
-			//		{
-			//			Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-			//		}
-			//	}
-   //         }
-			
-		}
+        }
 
 		public ActionResult Details()
         {
