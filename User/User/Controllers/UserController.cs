@@ -81,17 +81,17 @@ namespace User.Controllers
             try
             {
                 DataTable dt = GetDataTabletFromCSVFile(csvPath);
-                //using (SqlBulkCopy bulkCopy = new SqlBulkCopy(SQLServerConnectionString))
-                //{
-                //    //bulkCopy.ColumnMappings.Add(0, "UserId");
-                //    bulkCopy.ColumnMappings.Add(0, "Email");
-                //    bulkCopy.ColumnMappings.Add(1, "FirstName");
-                //    bulkCopy.ColumnMappings.Add(2, "LastName");
-                //    bulkCopy.DestinationTableName = "[User]";
-                //    bulkCopy.BatchSize = 0;
-                //    bulkCopy.WriteToServer(dt);
-                //    bulkCopy.Close();
-                //}
+                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(SQLServerConnectionString))
+                {
+                    //bulkCopy.ColumnMappings.Add(0, "UserId");
+                    bulkCopy.ColumnMappings.Add(0, "Email");
+                    bulkCopy.ColumnMappings.Add(1, "FirstName");
+                    bulkCopy.ColumnMappings.Add(2, "LastName");
+                    bulkCopy.DestinationTableName = "[User]";
+                    bulkCopy.BatchSize = 0;
+                    bulkCopy.WriteToServer(dt);
+                    bulkCopy.Close();
+                }
                 ViewBag.Title = "Success!";
             }
             catch (DbEntityValidationException ex)
